@@ -1,7 +1,7 @@
 // src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useUser } from "@clerk/clerk-react";
+import { useUser,SignedIn  } from "@clerk/clerk-react";
 
 // Pages
 import LandingPage from "./pages/LandingPage";
@@ -17,13 +17,18 @@ import Dashboard from "./pages/Dashboard";
 import { Toaster } from "@/components/ui/sonner";
 import { useSyncProfile } from "./hooks/useSyncProfile";
 import DeleteAccountButton from "./components/DeleteAccountButton";
-
+import OrganizationDetailPage from "./pages/OrganizationDetailPage";
+import OrganizationPage from "./pages/OrganizationPage";
+import { useSyncOrganization } from "./hooks/useSyncOrganization";
+import OrganizationListPage from "./pages/OrganizationListPage";
+import OrganizationsPage from "./pages/OrganizationsPage";
 // 🔒 Protected Route Wrapper
 function ProtectedRoute({ children }) {
   const { isLoaded, isSignedIn, user } = useUser();
 
   // Only sync profile if user is fully loaded & signed in
-
+  useSyncProfile();
+  useSyncOrganization()
 
   if (!isLoaded) return null; 
 
@@ -65,9 +70,30 @@ function App() {
               </ProtectedRoute>
             }
           />
+           <Route
+            path="/organizations"
+            element={
+              <ProtectedRoute>
+                <OrganizationsPage />
+              </ProtectedRoute>
+            }
+          />
+
+           <Route path="/organizationCheck" element={<OrganizationListPage />} />
+          <Route
+            path="/organization/:id"
+            element={
+             
+                <OrganizationDetailPage />
+            
+            }
+          />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />
+
+
+
         </Routes>
 
         {/* Global Toaster */}
