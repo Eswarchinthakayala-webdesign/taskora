@@ -442,7 +442,9 @@ export default function Dashboard() {
      Layout helper classes to prevent overflow and keep responsive widths
      --------------------------- */
   return (
-    <div className={`${bgClass} min-h-screen transition-colors duration-200`}>
+    <div className={`${bgClass}
+     bg-[radial-gradient(circle,_rgba(255,122,28,0.25)_1px,transparent_1px)]
+                 bg-[length:20px_20px] min-h-screen transition-colors duration-200`}>
       <div className="max-w-screen-2xl mx-auto px-4 py-6">
 
 <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 md:gap-4 mb-6 px-2 sm:px-4 md:px-6">
@@ -507,19 +509,42 @@ export default function Dashboard() {
     </div>
 
     {/* Org Switcher */}
-    <OrganizationSwitcher
-      afterCreateOrganizationUrl="/organizations"
-      appearance={{
-        elements: {
-          organizationSwitcherTrigger: `px-2 sm:px-3 py-1.5 rounded-lg text-sm sm:text-base ${
-            dark ? "bg-zinc-900 text-white" : "bg-white text-zinc-900"
-          }`,
-        },
-      }}
-    />
+   <OrganizationSwitcher
+  afterCreateOrganizationUrl="/organizations"
+  appearance={{
+    elements: {
+      // The trigger button itself
+      organizationSwitcherTrigger: `
+        flex items-center gap-2 rounded-lg px-3 py-1.5 transition-all 
+        text-sm sm:text-base shadow-sm 
+        ${dark ? "bg-zinc-900 text-white hover:bg-zinc-800" : "bg-white text-zinc-900 border border-zinc-200 hover:bg-zinc-50"}
+      `,
+      // Avatar/logo inside the trigger
+      organizationSwitcherAvatar: "w-6 h-6 rounded-full border border-zinc-300",
+      // Organization name text
+      organizationSwitcherText: "truncate text-black font-medium",
+      // Dropdown menu container
+      organizationSwitcherPopover: `
+        mt-2 rounded-xl shadow-lg border
+        ${dark ? "bg-zinc-900 border-zinc-800 text-white" : "bg-white border-zinc-200 text-zinc-900"}
+      `,
+      // Each organization row inside dropdown
+      organizationSwitcherListItem: `
+        flex items-center gap-2 rounded-md px-3 py-2 cursor-pointer transition
+        ${dark ? "hover:bg-zinc-800" : "hover:bg-zinc-100"}
+      `,
+      // "Create organization" button in dropdown
+      organizationSwitcherCreateOrganization: `
+        mt-2 w-full text-center font-semibold rounded-md px-3 py-2
+        ${dark ? "bg-orange-500 text-black hover:bg-orange-400" : "bg-orange-500 text-white hover:bg-orange-600"}
+      `,
+    },
+  }}
+/>
+
 
     {/* Theme toggle */}
-    <button
+    {/* <button
       onClick={() => setDark((d) => !d)}
       className={`p-2 rounded-lg ${
         dark ? "bg-zinc-800 border border-zinc-700" : "bg-white border border-zinc-200"
@@ -527,18 +552,18 @@ export default function Dashboard() {
       aria-label="Toggle theme"
     >
       {dark ? <Moon size={16} className="text-orange-400" /> : <Sun size={16} className="text-yellow-500" />}
-    </button>
+    </button> */}
 
     {/* User Button */}
-    <div
-      className={`rounded-lg p-0.5 ${
-        dark
-          ? "bg-gradient-to-br from-zinc-800 to-zinc-700"
-          : "bg-white/90 border border-zinc-200"
-      }`}
+   <div
+      className="relative rounded-full px-1 pt-1 
+                bg-gradient-to-r from-orange-300 via-orange-800 to-orange-500 
+                animate-gradient-move
+                hover:scale-105 transition-transform duration-500"
     >
       <UserButton afterSignOutUrl="/login" />
     </div>
+
   </div>
 </header>
 
